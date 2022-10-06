@@ -104,10 +104,11 @@ class ImpersonateManager
     /**
      * @param \Illuminate\Contracts\Auth\Authenticatable $from
      * @param \Illuminate\Contracts\Auth\Authenticatable $to
-     * @param string|null                         $guardName
+     * @param string|null $guardName
+     * @param bool $logout
      * @return bool
      */
-    public function take($from, $to, $guardName = null)
+    public function take($from, $to, $guardName = null, bool $logout = true)
     {
         $this->saveAuthCookieInSession();
 
@@ -117,7 +118,10 @@ class ImpersonateManager
             session()->put($this->getSessionGuard(), $currentGuard);
             session()->put($this->getSessionGuardUsing(), $guardName);
 
-            $this->app['auth']->guard($currentGuard)->quietLogout();
+            if ($logout) {
+                $this->app['auth']->guard($currentGuard)->quietLogout();
+            }
+
             $this->app['auth']->guard($guardName)->quietLogin($to);
 
         } catch (\Exception $e) {
@@ -245,7 +249,7 @@ class ImpersonateManager
     }
 
     /**
-     * @param array  $values
+     * @param array $values
      * @param string $search
      * @return \Illuminate\Support\Collection
      */
