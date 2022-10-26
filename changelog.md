@@ -1,5 +1,9 @@
 # Laravel Impersonate Changelog
 
+## 1.7.5
+
+- `ImpersonateManager@leave` logout by impersonator using instead of current guard auth
+
 ## 1.7.4
 
 ### Added 
