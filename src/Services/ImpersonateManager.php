@@ -140,7 +140,7 @@ class ImpersonateManager
             $impersonated = $this->app['auth']->guard($this->getImpersonatorGuardUsingName())->user();
             $impersonator = $this->findUserById($this->getImpersonatorId(), $this->getImpersonatorGuardName());
 
-            $this->app['auth']->guard($this->getCurrentAuthGuardName())->quietLogout();
+            $this->app['auth']->guard($this->getImpersonatorGuardUsingName())->quietLogout();
             $this->app['auth']->guard($this->getImpersonatorGuardName())->quietLogin($impersonator);
 
             $this->extractAuthCookieFromSession();
@@ -209,11 +209,17 @@ class ImpersonateManager
     /**
      * @return array|null
      */
-    public function getCurrentAuthGuardName()
+    public function getCurrentAuthGuardName($user = null)
     {
         $guards = array_keys(config('auth.guards'));
 
         foreach ($guards as $guard) {
+            if ($user) {
+                if ($this->app['auth']->guard($guard)->user() == $user) {
+                    return $guard;
+                }
+                continue;
+            }
             if ($this->app['auth']->guard($guard)->check()) {
                 return $guard;
             }
