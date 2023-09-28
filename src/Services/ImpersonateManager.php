@@ -113,7 +113,7 @@ class ImpersonateManager
         $this->saveAuthCookieInSession();
 
         try {
-            $currentGuard = $this->getCurrentAuthGuardName();
+            $currentGuard = $this->getCurrentAuthGuardName($from);
             session()->put($this->getSessionKey(), $from->getAuthIdentifier());
             session()->put($this->getSessionGuard(), $currentGuard);
             session()->put($this->getSessionGuardUsing(), $guardName);
