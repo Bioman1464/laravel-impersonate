@@ -1,5 +1,11 @@
 # Laravel Impersonate Changelog
 
+## 1.7.6
+
+### Added
+
+- `ImpersonateManager@take` use authenticated user to match guard on impersonation take
+
 ## 1.7.5
 
 - `ImpersonateManager@leave` logout by impersonator using instead of current guard auth
