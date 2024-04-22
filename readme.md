@@ -2,8 +2,9 @@
 
 [![Build Status](https://travis-ci.org/404labfr/laravel-impersonate.svg?branch=master)](https://travis-ci.org/404labfr/laravel-impersonate) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/404labfr/laravel-impersonate/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/404labfr/laravel-impersonate/?branch=master)
 
-**Laravel Impersonate** makes it easy to **authenticate as your users**. Add a simple **trait** to your **user model** and impersonate as one of your users in one click.
- 
+**Laravel Impersonate** makes it easy to **authenticate as your users**. Add a simple **trait** to your **user model**
+and impersonate as one of your users in one click.
+
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Simple usage](#simple-usage)
@@ -21,27 +22,29 @@
 
 ## Requirements
 
-- Laravel 6.x to 9.x
+- Laravel 6.x to 11.x
 - PHP >= 7.2 or >= 8.0
 
 ### Laravel support
 
-| Version       | Release       |
-|:-------------:|:-------------:|
-| 6.x to 9.x    | 1.7           |
-| 6.x, 7.x      | 1.6           |
-| 5.8           | 1.5           |
-| 5.7, 5.6      | 1.2           |
-| 5.5, 5.4      | 1.1           |
+|   Version   | Release |
+|:-----------:|:-------:|
+| 6.x to 11.x |   1.7   |
+|  6.x, 7.x   |   1.6   |
+|     5.8     |   1.5   |
+|  5.7, 5.6   |   1.2   |
+|  5.5, 5.4   |   1.1   |
 
 ## Installation
 
 - Require it with Composer:
+
 ```bash
 composer require lab404/laravel-impersonate
 ```
 
 - Add the service provider at the end of your `config/app.php`:
+
 ```php
 'providers' => [
     // ...
@@ -54,12 +57,14 @@ composer require lab404/laravel-impersonate
 ## Simple usage
 
 Impersonate a user:
+
 ```php
 Auth::user()->impersonate($other_user);
 // You're now logged as the $other_user
 ```
 
 Leave impersonation:
+
 ```php
 Auth::user()->leaveImpersonation();
 // You're now logged as your original user.
@@ -67,7 +72,7 @@ Auth::user()->leaveImpersonation();
 
 ### Using the built-in controller
 
-In your routes file, under web middleware, you must call the `impersonate` route macro. 
+In your routes file, under web middleware, you must call the `impersonate` route macro.
 
 ```php
 Route::impersonate();
@@ -134,6 +139,7 @@ You need to add the method `canBeImpersonated()` to your user model to extend th
 ### Using your own strategy
 
 - Getting the manager:
+
 ```php
 // With the app helper
 app('impersonate')
@@ -142,6 +148,7 @@ public function impersonate(ImpersonateManager $manager, $user_id) { /* ... */ }
 ```
 
 - Working with the manager:
+
 ```php
 $manager = app('impersonate');
 
@@ -166,7 +173,7 @@ $manager->getImpersonatorId();
 **Protect From Impersonation**
 
 You can use the middleware `impersonate.protect` to protect your routes against user impersonation.  
-This middleware can be useful when you want to protect specific pages like users subscriptions, users credit cards, ... 
+This middleware can be useful when you want to protect specific pages like users subscriptions, users credit cards, ...
 
 ```php
 Router::get('/my-credit-card', function() {
@@ -177,6 +184,7 @@ Router::get('/my-credit-card', function() {
 ### Events
 
 There are two events available that can be used to improve your workflow:
+
 - `TakeImpersonation` is fired when an impersonation is taken.
 - `LeaveImpersonation` is fired when an impersonation is leaved.
 
@@ -184,14 +192,16 @@ Each events returns two properties `$event->impersonator` and `$event->impersona
 
 ## Configuration
 
-The package comes with a configuration file.  
+The package comes with a configuration file.
 
 Publish it with the following command:
+
 ```bash
 php artisan vendor:publish --tag=impersonate
 ```
 
 Available options:
+
 ```php
     // The session key used to store the original user id.
     'session_key' => 'impersonated_by',
@@ -220,7 +230,8 @@ There are three Blade directives available.
 ### When the user can be impersonated
 
 This comes in handy when you have a user list and want to show an "Impersonate" button next to all the users.
-But you don\'t want that button next to the current authenticated user neither to that users which should not be able to impersonated according your implementation of `canBeImpersonated()` . 
+But you don\'t want that button next to the current authenticated user neither to that users which should not be able to
+impersonated according your implementation of `canBeImpersonated()` .
 
 ```blade
 @canBeImpersonated($user, $guard = null)
@@ -244,13 +255,16 @@ vendor/bin/phpunit
 
 ## Contributors
 
-- This package was created by [MarceauKa](https://github.com/MarceauKa) and [tghpow](https://github.com/tghpow). Many thanks to all of our [contributors](https://github.com/404labfr/laravel-impersonate/graphs/contributors).
+- This package was created by [MarceauKa](https://github.com/MarceauKa) and [tghpow](https://github.com/tghpow). Many
+  thanks to all of our [contributors](https://github.com/404labfr/laravel-impersonate/graphs/contributors).
 
 ## Rationale
 
 ### Why not just use `loginAsId()`?
 
-This package adds broader functionality, including Blade directives to allow you to override analytics and other tracking events when impersonating, fire events based on impersonation status, and more. Brief discussion at [issues/5](https://github.com/404labfr/laravel-impersonate/issues/5)
+This package adds broader functionality, including Blade directives to allow you to override analytics and other
+tracking events when impersonating, fire events based on impersonation status, and more. Brief discussion
+at [issues/5](https://github.com/404labfr/laravel-impersonate/issues/5)
 
 ## Licence
 
